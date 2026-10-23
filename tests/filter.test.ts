@@ -58,3 +58,11 @@ describe("filterJobs", () => {
     expect(filterJobs([job({ date: "" })], config, NOW)).toHaveLength(1);
   });
 });
+
+describe("alwaysKeepLocations", () => {
+  const local = parseConfig({ include: ["react"], remoteOnly: true, alwaysKeepLocations: ["antananarivo"], sources: {} });
+  it("garde un lieu local même s'il n'est pas remote", () => {
+    expect(filterJobs([job({ location: "ANTANANARIVO" })], local, NOW)).toHaveLength(1);
+    expect(filterJobs([job({ location: "Paris, France" })], local, NOW)).toHaveLength(0);
+  });
+});

@@ -11,6 +11,8 @@ const configSchema = z.object({
   maxAgeDays: z.number().positive().default(7),
   sendEmptyDigest: z.boolean().default(false),
   excludeLocations: z.array(z.string().min(1)).default([]),
+  // Lieux gardés même s'ils ne sont pas remote (ex. offres locales à Madagascar).
+  alwaysKeepLocations: z.array(z.string().min(1)).default([]),
   scoring: z
     .object({
       minScore: z.number().min(0).max(10).default(5),
@@ -26,7 +28,11 @@ export type Config = z.infer<typeof configSchema>;
 const envSchema = z.object({
   MONGODB_URI: z.string().min(1, "MONGODB_URI manquant"),
   GMAIL_USER: z.string().email("GMAIL_USER doit être une adresse email"),
-  GMAIL_APP_PASSWORD: z.string().min(1, "GMAIL_APP_PASSWORD manquant"),
+  // Google affiche le code par groupes de 4 caractères séparés par des espaces : on les retire.
+  GMAIL_APP_PASSWORD: z
+    .string()
+    .transform((s) => s.replace(/\s+/g, ""))
+    .pipe(z.string().min(1, "GMAIL_APP_PASSWORD manquant")),
   EMAIL_TO: z.string().email("EMAIL_TO doit être une adresse email"),
   ENABLE_AI_SCORING: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),

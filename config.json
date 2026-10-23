@@ -5,6 +5,7 @@
   "maxAgeDays": 7,
   "sendEmptyDigest": false,
   "excludeLocations": ["us only", "usa only", "u.s. only", "united states", "canada only", "uk only", "north america"],
+  "alwaysKeepLocations": ["antananarivo", "madagascar"],
   "scoring": { "minScore": 5, "maxJobsScored": 30, "model": "claude-haiku-5-5" },
   "sources": {
     "remoteok": true,
@@ -13,6 +14,9 @@
     "himalayas": true,
     "hackernews": true,
     "getyourjob": true,
+    "freework": true,
+    "codeur": true,
+    "madajob": true,
     "portaljob": false
   }
 }

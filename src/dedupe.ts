@@ -46,11 +46,14 @@ export async function connectStore(uri: string): Promise<JobStore> {
 export function describeMongoError(err: unknown): string {
   const msg = err instanceof Error ? (err.message.split("\n")[0] ?? "") : "erreur inconnue";
   let hint = "";
-  if (/tlsv1 alert|ssl alert|ECONNREFUSED|ETIMEDOUT|Server selection timed out/i.test(msg)) {
+  if (/querySrv|ENOTFOUND/i.test(msg)) {
+    hint =
+      "Résolution DNS (SRV) impossible depuis cette machine : essaie un autre DNS (8.8.8.8 / 1.1.1.1) ou la chaîne de connexion standard mongodb:// (non-SRV) d'Atlas, et vérifie l'URI.";
+  } else if (/tlsv1 alert|ssl alert|ECONNREFUSED|ETIMEDOUT|Server selection timed out/i.test(msg)) {
     hint = "Vérifie Atlas > Network Access (autoriser 0.0.0.0/0 pour GitHub Actions) et que le cluster n'est pas en pause.";
   } else if (/auth|bad auth|credentials/i.test(msg)) {
     hint = "Vérifie l'utilisateur et le mot de passe de MONGODB_URI (encode les caractères spéciaux, ex. @ -> %40).";
-  } else if (/ENOTFOUND|querySrv|Invalid (scheme|connection string)/i.test(msg)) {
+  } else if (/Invalid (scheme|connection string)/i.test(msg)) {
     hint = "Vérifie le format de MONGODB_URI (mongodb+srv://...).";
   }
   return hint ? `${msg} — ${hint}` : msg;

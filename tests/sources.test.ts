@@ -2,6 +2,9 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { Job } from "../src/types.js";
 import { parseGetYourJob, parseRelativeDate } from "../src/sources/getyourjob.js";
+import { parseCodeurFeed } from "../src/sources/codeur.js";
+import { parseFrenchDate, parseFreeWork } from "../src/sources/freework.js";
+import { parseMadajob } from "../src/sources/madajob.js";
 import { findHiringThreadId, parseHackerNews } from "../src/sources/hackernews.js";
 import { parseHimalayas } from "../src/sources/himalayas.js";
 import { parsePortalJob } from "../src/sources/portaljob.js";
@@ -133,5 +136,55 @@ describe("getyourjob", () => {
     expect(parseRelativeDate("il y a 2 j", NOW)).toBe("2026-10-21T06:00:00.000Z");
     expect(parseRelativeDate("il y a 3 h", NOW)).toBe("2026-10-23T03:00:00.000Z");
     expect(parseRelativeDate("n'importe quoi", NOW)).toBe("");
+  });
+});
+
+describe("codeur", () => {
+  it("parse le flux RSS : titre décodé, budget, catégories, date", async () => {
+    const jobs = await parseCodeurFeed(fixture("codeur.xml"));
+    expectValidJobs(jobs, "codeur");
+    expect(jobs).toHaveLength(3);
+    expect(jobs[0]?.url).toMatch(/^https:\/\/www\.codeur\.com\/projects\/\d+-/);
+    expect(jobs[0]?.tags?.length).toBeGreaterThan(0);
+    expect(jobs[0]?.location).toMatch(/^Remote/);
+    expect(jobs.every((j) => !j.title.includes("&#39;"))).toBe(true);
+    expect(jobs[0]?.date).toBe("2026-10-23T06:47:01.000Z");
+  });
+});
+
+describe("madajob", () => {
+  it("lit titre, employeur, ville, date ISO, secteur et contrat (sans description)", () => {
+    const jobs = parseMadajob(fixture("madajob.html"));
+    expectValidJobs(jobs, "madajob");
+    expect(jobs).toHaveLength(3);
+    expect(jobs[0]).toMatchObject({
+      id: "madajob:gestionnaire-recouvrement-amiable",
+      title: "Gestionnaire Recouvrement Amiable",
+      location: "ANTANANARIVO",
+      date: "2026-10-22T11:15:37.185Z",
+      tags: ["TELECOMMUNICATION", "Intérim"],
+    });
+    expect(jobs[0]?.description).toBeUndefined();
+  });
+});
+
+describe("freework", () => {
+  it("dédoublonne et lit contrat, entreprise, date, ville", () => {
+    const jobs = parseFreeWork(fixture("freework.html"));
+    expectValidJobs(jobs, "freework");
+    expect(jobs).toHaveLength(3);
+    for (const j of jobs) {
+      expect(j.company).not.toBe("");
+      expect(j.date).toMatch(/^\d{4}-\d{2}-\d{2}T00:00:00\.000Z$/);
+      expect(j.url).toContain("/job-mission/");
+    }
+  });
+  it("déduit le mode de travail du champ Télétravail", () => {
+    const modes = parseFreeWork(fixture("freework.html")).map((j) => j.location?.split(" · ")[1]);
+    expect(modes).toEqual(expect.arrayContaining(["Hybride", "Full remote", "Sur site"]));
+  });
+  it("parseFrenchDate", () => {
+    expect(parseFrenchDate("23/10/2026")).toBe("2026-10-23T00:00:00.000Z");
+    expect(parseFrenchDate("n/a")).toBe("");
   });
 });

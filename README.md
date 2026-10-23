@@ -73,6 +73,7 @@ Attention : GitHub désactive les workflows planifiés après 60 jours sans acti
 | `include` | Au moins un de ces mots-clés (mot entier) doit apparaître dans titre/description/tags |
 | `exclude` | Aucun de ces mots-clés ne doit apparaître |
 | `remoteOnly` | Rejette les offres dont le lieu n'est pas remote (lieu vide = gardé) |
+| `alwaysKeepLocations` | Lieux gardés même s'ils ne sont pas remote (ex. `antananarivo`, `madagascar` pour les offres locales de Madajob) |
 | `excludeLocations` | Écarte les lieux contenant ces fragments (ex. `us only`) : inutiles depuis Madagascar |
 | `maxAgeDays` | Ignore les offres plus vieilles (date inconnue = gardée) |
 | `sendEmptyDigest` | `true` pour recevoir un email même sans nouvelle offre |
@@ -103,11 +104,21 @@ Avec `ENABLE_AI_SCORING=true` et `ANTHROPIC_API_KEY`, chaque exécution envoie l
 | Himalayas | API JSON de recherche (react, typescript, node.js, full stack) | Lien de candidature fourni par l'API et crédit visible dans le digest. 20 résultats par requête. |
 | Hacker News | API Algolia, dernier thread « Who is hiring? » | Posts en texte libre : entreprise/lieu déduits de la 1re ligne ; thread publié le 1er du mois, donc `maxAgeDays: 7` les écarte après une semaine. |
 | GetYourJob | HTML rendu côté serveur de `getyourjob.pro/offers` (+ `?q=` react, typescript, node) + cheerio | Site orienté France : la plupart des offres sont « Hybride »/« Sur site » et sont écartées par `remoteOnly` ; seules les « Full remote » passent. Dates relatives (« il y a 2 j »). Voir ci-dessous. |
+| Free-Work | HTML rendu côté serveur de `free-work.com/fr/tech-it/jobs` (+ `?query=` react, typescript, node) + cheerio | CDI et missions freelance IT en France. Le champ « Télétravail » donne le mode : « partiel » = Hybride (écarté), « 100 % » = Full remote. Dates au format jj/mm/aaaa. |
+| Codeur.com | Flux RSS officiel `codeur.com/projects.rss` | Missions freelance de clients francophones (35 dernières). Surtout du non-dev : le filtre garde le web. Client anonyme, budget indiqué dans le lieu. |
+| Madajob | HTML rendu côté serveur de `madajob.mg/jobs` (+ `?q=développeur`) + cheerio | Offres locales à Madagascar (gardées via `alwaysKeepLocations`). Titre seulement, sans description : le filtre `include` ne voit donc que le titre. |
 | PortalJob | **Désactivée par défaut** | Voir ci-dessous. |
 
 ### GetYourJob
 
 `robots.txt` autorise `/offers` (seul `/api/` est interdit, il n'est pas utilisé). Les CGU interdisent l'extraction *massive* des offres (« scraping, robots hors des usages autorisés ») : le bot reste donc à **4 pages de liste publiques par jour**, sans compte ni `/api/`, avec un User-Agent explicite et un lien vers l'offre d'origine dans le digest. Si tu veux être plus prudent, désactive `getyourjob` dans `config.json` ou contacte le site (`contact@getyourjob.pro`). Le connecteur dépend de la structure HTML de la page (cartes `h3 > a[href^="/jobs/"]`) : si le site change, le test sur fixture et le log `[getyourjob] 0 offres` le signaleront.
+
+### Free-Work, Codeur.com, Madajob
+
+- **Free-Work** : `robots.txt` n'interdit que `/login`, `/logout` et `/fw-deals` aux agents génériques, et leurs conditions ne contiennent pas d'interdiction d'accès automatisé. 4 pages de liste par jour.
+- **Codeur.com** : flux RSS public ; `robots.txt` n'interdit que les URLs avec paramètres, le flux n'en a pas. 1 requête par jour.
+- **Madajob** : pas de `robots.txt` (404). Les mentions légales interdisent la reproduction du contenu sans autorisation écrite : le bot ne reprend que titre, employeur, lieu, secteur, contrat et lien, jamais le texte des annonces. 2 pages par jour. Pour être sûr, écris à `infos@madajob.mg` ou désactive `madajob`.
+- Free-Work et Madajob dépendent de la structure HTML : si le site change, le log affichera `[source] 0 offres` et le test sur fixture échouera.
 
 ### PortalJob
 

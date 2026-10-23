@@ -22,6 +22,15 @@ describe("config", () => {
       expect((e as Error).message).not.toContain("pas-un-email");
     }
   });
+  it("loadEnv retire les espaces du mot de passe d'application", () => {
+    const env = loadEnv({
+      MONGODB_URI: "mongodb+srv://x",
+      GMAIL_USER: "bot@gmail.com",
+      GMAIL_APP_PASSWORD: "abcd efgh ijkl mnop",
+      EMAIL_TO: "me@example.com",
+    });
+    expect(env.GMAIL_APP_PASSWORD).toBe("abcdefghijklmnop");
+  });
   it("loadEnv en dry-run n'exige rien", () => {
     expect(loadEnv({}, { requireAll: false })).toEqual({});
   });
@@ -38,6 +47,11 @@ describe("describeMongoError", () => {
   it("ajoute une piste pour l'erreur TLS d'Atlas (IP non autorisée)", () => {
     const msg = describeMongoError(new Error("error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error"));
     expect(msg).toContain("Network Access");
+  });
+  it("distingue un échec DNS SRV d'un problème d'allowlist", () => {
+    const msg = describeMongoError(new Error("querySrv ECONNREFUSED _mongodb._tcp.cluster0.example.mongodb.net"));
+    expect(msg).toContain("DNS");
+    expect(msg).not.toContain("Network Access");
   });
   it("ajoute une piste pour une erreur d'authentification", () => {
     expect(describeMongoError(new Error("bad auth : Authentication failed."))).toContain("mot de passe");

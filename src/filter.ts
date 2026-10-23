@@ -33,8 +33,9 @@ export function filterJobs(jobs: Job[], config: Config, now = new Date()): Job[]
     const text = searchableText(job);
     if (!config.include.some((k) => matchesKeyword(text, k))) return false;
     if (config.exclude.some((k) => matchesKeyword(text, k))) return false;
-    if (config.remoteOnly && !isRemote(job)) return false;
     const loc = (job.location ?? "").toLowerCase();
+    const keepLocal = loc !== "" && config.alwaysKeepLocations.some((l) => loc.includes(l.toLowerCase()));
+    if (config.remoteOnly && !keepLocal && !isRemote(job)) return false;
     if (loc && config.excludeLocations.some((l) => loc.includes(l.toLowerCase()))) return false;
     return isFresh(job, config.maxAgeDays, now);
   });
