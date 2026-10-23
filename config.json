@@ -1,0 +1,18 @@
+{
+  "include": ["react", "next.js", "nextjs", "typescript", "node.js", "react native", "fullstack", "full-stack"],
+  "exclude": ["senior staff", "unpaid", "internship", "stage"],
+  "remoteOnly": true,
+  "maxAgeDays": 7,
+  "sendEmptyDigest": false,
+  "excludeLocations": ["us only", "usa only", "u.s. only", "united states", "canada only", "uk only", "north america"],
+  "scoring": { "minScore": 5, "maxJobsScored": 30, "model": "claude-haiku-5-5" },
+  "sources": {
+    "remoteok": true,
+    "remotive": true,
+    "weworkremotely": true,
+    "himalayas": true,
+    "hackernews": true,
+    "getyourjob": true,
+    "portaljob": false
+  }
+}

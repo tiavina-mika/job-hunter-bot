@@ -1,0 +1,30 @@
+{
+  "name": "job-hunter-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Bot de veille d'offres d'emploi remote : collecte, filtre, déduplique et envoie un digest par email.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "dry-run": "tsx src/index.ts --dry-run",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "mongodb": "^7.7.0",
+    "nodemailer": "^10.2.1",
+    "rss-parser": "^3.13.0",
+    "tsx": "^4.23.15",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/nodemailer": "^8.0.2",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

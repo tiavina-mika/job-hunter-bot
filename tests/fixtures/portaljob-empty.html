@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr"  class="">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+        <script>
+            (function() {
+                const appearance = 'system';
+
+                if (appearance === 'system') {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                    if (prefersDark) {
+                        document.documentElement.classList.add('dark');
+                    }
+                }
+            })();
+        </script>
+
+        <script>
+            // force removal du dark mode au chargement
+            document.documentElement.classList.remove('dark');
+
+            // bloque toute réactivation future
+            const observer = new MutationObserver(() => {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                }
+            });
+
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        </script>
+
+        
+        <style>
+            html {
+                background-color: oklch(1 0 0);
+            }
+
+            html.dark {
+                background-color: oklch(0.145 0 0);
+            }
+        </style>
+
+        <title inertia>PortalJob</title>
+
+        <link rel="icon" href="/ico-pjm.ico" sizes="any">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-X9T33F62MG"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());   gtag('config', 'G-X9T33F62MG'); </script>        
+
+                <link rel="preload" as="style" href="https://www.portaljob-madagascar.com/build/assets/app-B5CGXB7S.css" /><link rel="modulepreload" as="script" href="https://www.portaljob-madagascar.com/build/assets/app-BwOY6vop.js" /><link rel="stylesheet" href="https://www.portaljob-madagascar.com/build/assets/app-B5CGXB7S.css" /><script type="module" src="https://www.portaljob-madagascar.com/build/assets/app-BwOY6vop.js"></script>        
+    </head>
+    <body class="font-sans antialiased">
+        <div id="app" data-page="{&quot;component&quot;:&quot;emploi\/Index&quot;,&quot;props&quot;:{&quot;errors&quot;:{},&quot;name&quot;:&quot;PortalJob&quot;,&quot;quote&quot;:{&quot;message&quot;:&quot;The best way to take care of the future is to take care of the present moment.&quot;,&quot;author&quot;:&quot;Thich Nhat Hanh&quot;},&quot;auth&quot;:{&quot;user&quot;:null,&quot;profil_photo&quot;:null},&quot;sidebarOpen&quot;:true,&quot;megaMenu&quot;:{&quot;contrats&quot;:[{&quot;id&quot;:1,&quot;type_contrat&quot;:&quot;CDI&quot;},{&quot;id&quot;:2,&quot;type_contrat&quot;:&quot;CDD&quot;},{&quot;id&quot;:3,&quot;type_contrat&quot;:&quot;Fonction publique&quot;},{&quot;id&quot;:4,&quot;type_contrat&quot;:&quot;Int\u00e9rim&quot;},{&quot;id&quot;:5,&quot;type_contrat&quot;:&quot;Stage&quot;},{&quot;id&quot;:7,&quot;type_contrat&quot;:&quot;Free-lance&quot;}],&quot;secteurs&quot;:[{&quot;id&quot;:32,&quot;secteur&quot;:&quot;Agronomie \/ Agriculture&quot;,&quot;secteur_url&quot;:&quot;agronomie-agriculture&quot;},{&quot;id&quot;:29,&quot;secteur&quot;:&quot;Biologie \/ chimie \/ Sciences&quot;,&quot;secteur_url&quot;:&quot;biologie-chimie-sciences&quot;},{&quot;id&quot;:1,&quot;secteur&quot;:&quot;Commercial \/ Vente&quot;,&quot;secteur_url&quot;:&quot;commercial-vente&quot;},{&quot;id&quot;:9,&quot;secteur&quot;:&quot;Confection \/ Artisan&quot;,&quot;secteur_url&quot;:&quot;confection-artisan&quot;},{&quot;id&quot;:28,&quot;secteur&quot;:&quot;Conseiller client \/ Call center&quot;,&quot;secteur_url&quot;:&quot;conseiller-client-call-center&quot;},{&quot;id&quot;:15,&quot;secteur&quot;:&quot;Consultant \/ Enqu\u00eateur&quot;,&quot;secteur_url&quot;:&quot;consultant-enqueteur&quot;},{&quot;id&quot;:20,&quot;secteur&quot;:&quot;Droit \/ Juriste&quot;,&quot;secteur_url&quot;:&quot;droit-juriste&quot;},{&quot;id&quot;:8,&quot;secteur&quot;:&quot;Enseignement&quot;,&quot;secteur_url&quot;:&quot;fonction-publique-enseignement&quot;},{&quot;id&quot;:25,&quot;secteur&quot;:&quot;Ev\u00e9nementiel&quot;,&quot;secteur_url&quot;:&quot;evenementiel&quot;},{&quot;id&quot;:2,&quot;secteur&quot;:&quot;Gestion \/ Comptabilit\u00e9 \/ Finance&quot;,&quot;secteur_url&quot;:&quot;gestion-comptabilite-finance&quot;},{&quot;id&quot;:21,&quot;secteur&quot;:&quot;Humanitaire \/ Social&quot;,&quot;secteur_url&quot;:&quot;humanitaire-social&quot;},{&quot;id&quot;:16,&quot;secteur&quot;:&quot;Import \/ Export&quot;,&quot;secteur_url&quot;:&quot;import-export&quot;},{&quot;id&quot;:7,&quot;secteur&quot;:&quot;Informatique \/ web&quot;,&quot;secteur_url&quot;:&quot;informatique-web&quot;},{&quot;id&quot;:6,&quot;secteur&quot;:&quot;Ing\u00e9nierie \/ industrie \/ BTP&quot;,&quot;secteur_url&quot;:&quot;ingenierie-industrie-btp&quot;},{&quot;id&quot;:18,&quot;secteur&quot;:&quot;Journalisme \/ Langue \/ Interpr\u00e8te&quot;,&quot;secteur_url&quot;:&quot;journalisme-langue-interprete&quot;},{&quot;id&quot;:23,&quot;secteur&quot;:&quot;Logistique \/ Achats&quot;,&quot;secteur_url&quot;:&quot;logistique-achats&quot;},{&quot;id&quot;:12,&quot;secteur&quot;:&quot;Main d&#039;oeuvre \/ M\u00e9nage \/ Chauffeur&quot;,&quot;secteur_url&quot;:&quot;main-d-oeuvre-menage-chauffeur&quot;},{&quot;id&quot;:24,&quot;secteur&quot;:&quot;Maintenance \/ M\u00e9canique&quot;,&quot;secteur_url&quot;:&quot;maintenance-mecanique&quot;},{&quot;id&quot;:3,&quot;secteur&quot;:&quot;Management \/ RH&quot;,&quot;secteur_url&quot;:&quot;management-rh&quot;},{&quot;id&quot;:19,&quot;secteur&quot;:&quot;Marketing \/ Communication&quot;,&quot;secteur_url&quot;:&quot;marketing-communication&quot;},{&quot;id&quot;:10,&quot;secteur&quot;:&quot;Medecine \/ Sant\u00e9&quot;,&quot;secteur_url&quot;:&quot;medecine-sante-pharmacie&quot;},{&quot;id&quot;:17,&quot;secteur&quot;:&quot;Mode \/ beaut\u00e9&quot;,&quot;secteur_url&quot;:&quot;mode-beaute&quot;},{&quot;id&quot;:31,&quot;secteur&quot;:&quot;Qualit\u00e9 \/ Normes&quot;,&quot;secteur_url&quot;:&quot;qualite-normes&quot;},{&quot;id&quot;:26,&quot;secteur&quot;:&quot;R\u00e9ception \/ Accueil \/ Standard&quot;,&quot;secteur_url&quot;:&quot;reception-accueil-standard&quot;},{&quot;id&quot;:5,&quot;secteur&quot;:&quot;R\u00e9daction \/ Saisie \/ Offshore&quot;,&quot;secteur_url&quot;:&quot;redaction-saisie-offshore&quot;},{&quot;id&quot;:4,&quot;secteur&quot;:&quot;Responsable \/ Direction \/ Administration&quot;,&quot;secteur_url&quot;:&quot;responsable-direction-administration&quot;},{&quot;id&quot;:13,&quot;secteur&quot;:&quot;Restauration \/ h\u00f4tellerie&quot;,&quot;secteur_url&quot;:&quot;restauration-hotellerie&quot;},{&quot;id&quot;:14,&quot;secteur&quot;:&quot;S\u00e9cr\u00e9tariat \/ Assistanat&quot;,&quot;secteur_url&quot;:&quot;secretariat-assistanat&quot;},{&quot;id&quot;:11,&quot;secteur&quot;:&quot;Securit\u00e9&quot;,&quot;secteur_url&quot;:&quot;securite&quot;},{&quot;id&quot;:27,&quot;secteur&quot;:&quot;T\u00e9l\u00e9-vente \/ Prospection \/ Enqu\u00eate&quot;,&quot;secteur_url&quot;:&quot;tele-vente-prospection-enquete&quot;},{&quot;id&quot;:22,&quot;secteur&quot;:&quot;T\u00e9l\u00e9communication&quot;,&quot;secteur_url&quot;:&quot;telecommunication&quot;},{&quot;id&quot;:30,&quot;secteur&quot;:&quot;Tourisme \/ Voyage&quot;,&quot;secteur_url&quot;:&quot;tourisme-voyage&quot;}]},&quot;flash&quot;:{&quot;success&quot;:null,&quot;error&quot;:null},&quot;recaptcha&quot;:{&quot;site_key&quot;:&quot;0x4AAAAAADCpgNVZmbmNby_L&quot;},&quot;google&quot;:{&quot;client_id&quot;:&quot;448923562319-a9uf47cr53vsq0mhss4bltl4e2ufe5t0.apps.googleusercontent.com&quot;},&quot;search&quot;:[]},&quot;url&quot;:&quot;\/emploi\/liste&quot;,&quot;version&quot;:&quot;7fd41ef200609c3cf09ceb8d13ce2d58&quot;,&quot;clearHistory&quot;:false,&quot;encryptHistory&quot;:false}"></div>
+        <script type="text/javascript">
+            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+            (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/5914698b4ac4446b24a6e7b9/default';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+            })();
+        </script>
+    </body>
+</html>
