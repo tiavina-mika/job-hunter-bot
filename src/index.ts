@@ -1,4 +1,4 @@
-import { connectStore, type JobStore } from "./dedupe.js";
+import { connectStore, describeMongoError, type JobStore } from "./dedupe.js";
 import { loadConfig, loadEnv, type Env } from "./config.js";
 import { filterJobs } from "./filter.js";
 import { logger } from "./logger.js";
@@ -51,7 +51,7 @@ async function main(): Promise<number> {
       store = await connectStore(env.MONGODB_URI);
       fresh = await store.filterNew(filtered);
     } catch (err) {
-      logger.error(`MongoDB indisponible : ${err instanceof Error ? err.message.split("\n")[0] : "erreur"}`);
+      logger.error(`MongoDB indisponible : ${describeMongoError(err)}`);
       if (!dryRun) return 1;
       logger.warn("Dry-run : déduplication ignorée");
     }

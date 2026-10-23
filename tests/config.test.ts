@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { loadEnv, parseConfig } from "../src/config.js";
+import { describeMongoError } from "../src/dedupe.js";
 import { parseRatings } from "../src/score.js";
 
 describe("config", () => {
@@ -30,5 +31,18 @@ describe("score", () => {
   it("parseRatings extrait le JSON même entouré de texte", () => {
     const r = parseRatings('Voici :\n[{"i":0,"score":8,"reason":"ok"},{"i":1,"score":"x"}]');
     expect(r).toEqual([{ i: 0, score: 8, reason: "ok" }]);
+  });
+});
+
+describe("describeMongoError", () => {
+  it("ajoute une piste pour l'erreur TLS d'Atlas (IP non autorisée)", () => {
+    const msg = describeMongoError(new Error("error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error"));
+    expect(msg).toContain("Network Access");
+  });
+  it("ajoute une piste pour une erreur d'authentification", () => {
+    expect(describeMongoError(new Error("bad auth : Authentication failed."))).toContain("mot de passe");
+  });
+  it("laisse les autres erreurs telles quelles", () => {
+    expect(describeMongoError(new Error("boom"))).toBe("boom");
   });
 });
